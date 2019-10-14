@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/13 10:16:01 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/13 11:46:10 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/14 19:17:45 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -28,6 +28,6 @@ char		*ft_strjoin(const char *s1, const char *s2);
 char		*ft_strndup(const char *s, size_t n);
 int			get_next_line(int fd, char **line);
 char		*ft_read_line(int fd, char *str);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+char    	*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif
