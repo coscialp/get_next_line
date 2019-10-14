@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/13 12:11:57 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/14 20:34:08 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/14 20:41:37 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -28,7 +28,7 @@ void	ft_strdel(char **ptr)
 	*ptr = NULL;
 }
 
-char		*ft_strfjoin(char *s1, const char *s2)
+char		*ft_strjoin(char *s1,const char *s2)
 {
 	int		i;
 	int		j;
@@ -51,21 +51,19 @@ char		*ft_strfjoin(char *s1, const char *s2)
 	return (str);
 }
 
-int		ft_read_line(int fd, char **str)
+char	*ft_read_line(int fd, char *str)
 {
 	int ret;
 	char buf[BUFFER_SIZE + 1];
 
-	while ((ret = read(fd, buf, BUFFER_SIZE)))
+	while ((ret = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
-		if (ret < 0)
-			return (0);
 		buf[ret] = '\0';
-		*str = ft_strfjoin(*str, buf);
+		str = ft_strjoin(str, buf);
 		if (strchr(buf, '\n'))
 			break ;
 	}
-	return (1);
+	return (str);
 }
 
 void	ft_putendl(char *s)
@@ -102,13 +100,12 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-int	get_next_line(int fd, char **string)
+int	ft_f(int fd, char **string)
 {
 	static char *s = "";
-	int i;
+	static int i = 0;
 
-	if (ft_read_line(fd, &s))
-		return (-1);
+	s = ft_read_line(fd, s + i);
 	i = 0;
 	while (s[i] != '\n' && s[i])
 		i++;
@@ -124,7 +121,6 @@ int	get_next_line(int fd, char **string)
 	}
 	*string = ft_substr(s ,0 ,i);
 	i++;
-	s = s + i;
 	return (1);
 }
 
@@ -135,9 +131,8 @@ int main(int ac, char **av)
 	int fd;
 	int i = 6;
 	
-	if ((fd = open(av[1], O_RDONLY)) < 0)
-		return 0;
-	while ((get_next_line(fd, &line) != 0))
+	fd = open(av[1], O_RDONLY);
+	while ((ft_f(fd, &line) != 0))
 		ft_putendl(line);
 	close(fd);
 	return 0;
