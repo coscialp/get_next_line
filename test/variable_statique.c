@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/13 12:11:57 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/14 20:41:37 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/15 19:01:27 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -28,7 +28,7 @@ void	ft_strdel(char **ptr)
 	*ptr = NULL;
 }
 
-char		*ft_strjoin(char *s1,const char *s2)
+char		*ft_strfjoin(char *s1,const char *s2)
 {
 	int		i;
 	int		j;
@@ -47,7 +47,7 @@ char		*ft_strjoin(char *s1,const char *s2)
 		i++;
 	}
 	str[i] = '\0';
-	//ft_strdel(&s1);
+	ft_strdel(&s1);
 	return (str);
 }
 
@@ -59,7 +59,8 @@ char	*ft_read_line(int fd, char *str)
 	while ((ret = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
-		str = ft_strjoin(str, buf);
+		if (!(str = ft_strfjoin(str, buf)))
+			return (NULL);
 		if (strchr(buf, '\n'))
 			break ;
 	}
@@ -82,7 +83,27 @@ void	ft_putendl(char *s)
 	}
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char		*ft_strfdup(char *str)
+{
+	int		size;
+	int		i;
+	char	*dest;
+
+	i = 0;
+	size = strlen(str);
+	if (!(dest = (char*)malloc(sizeof(char) * (size + 1))))
+		return (0);
+	while (str[i] != '\0')
+	{
+		dest[i] = str[i];
+		i++;
+	}
+	dest[i] = '\0';
+	ft_strdel(&str);
+	return (dest);
+}
+
+char	*ft_subfstr(char *s, unsigned int start, size_t len)
 {
 	int		i;
 	char	*str;
@@ -97,43 +118,47 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		i++;
 	}
 	str[i] = '\0';
+	ft_strdel(&s);
 	return (str);
 }
 
 int	ft_f(int fd, char **string)
 {
-	static char *s = "";
-	static int i = 0;
+	static char *s;
+	int i;
 
-	s = ft_read_line(fd, s + i);
+	if (!s)
+		s = strdup("");
+	s = ft_read_line(fd, s);
 	i = 0;
 	while (s[i] != '\n' && s[i])
 		i++;
 	if (s[i] == '\0')
-	{
 		return (0);
-	}
 	if (i == 0)
 	{
 		*string = strdup("");
-		i++;
+		s = strdup(s + i + 1);
 		return (1);
 	}
-	*string = ft_substr(s ,0 ,i);
+	s = ft_subfstr(s ,0 ,i);
+	*string = strdup(s);
 	i++;
+	s = ft_strfdup(s + i);
 	return (1);
 }
 
-int main(int ac, char **av)
+int				main(void)
 {
-	(void)ac;
-	char *line = NULL;
-	int fd;
-	int i = 6;
-	
-	fd = open(av[1], O_RDONLY);
-	while ((ft_f(fd, &line) != 0))
+	char		*line = NULL;
+	int			fd = open("get_next_line.c", O_RDONLY);
+	int i = 0;
+
+	while(ft_f(fd, &line) != 0)
+	{
 		ft_putendl(line);
+		ft_strdel(&line);
+	}
 	close(fd);
-	return 0;
+	return (0);
 }
