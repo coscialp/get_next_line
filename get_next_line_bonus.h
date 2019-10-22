@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   get_next_line.h                                  .::    .:/ .      .::   */
+/*   get_next_line_bonus.h                            .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/10/13 10:16:01 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/22 16:42:47 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/10/22 10:47:30 by coscialp     #+#   ##    ##    #+#       */
+/*   Updated: 2019/10/22 14:16:32 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include "stdlib.h"
 # include <unistd.h>

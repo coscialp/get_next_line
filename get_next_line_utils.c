@@ -6,16 +6,16 @@
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/13 10:15:55 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/21 17:51:24 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/22 14:17:45 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t		ft_strlen(const char *str)
+size_t			ft_strlen(const char *str)
 {
-	size_t	i;
+	size_t		i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -23,11 +23,11 @@ size_t		ft_strlen(const char *str)
 	return (i);
 }
 
-char		*ft_strdup(const char *str)
+char			*ft_strdup(const char *str)
 {
-	int		size;
-	int		i;
-	char	*dest;
+	size_t		size;
+	size_t		i;
+	char		*dest;
 
 	i = 0;
 	size = ft_strlen(str);
@@ -42,13 +42,19 @@ char		*ft_strdup(const char *str)
 	return (dest);
 }
 
-char		*ft_substr(char *s, unsigned int start, size_t len)
+char			*ft_substr(char *s, unsigned int start, size_t len)
 {
-	int		i;
-	char	*str;
+	size_t		i;
+	size_t		l;
+	size_t		lmalloc;
+	char		*str;
 
 	i = 0;
-	if (!(str = (char *)malloc(sizeof(char) * (len + 1))))
+	l = ft_strlen(s);
+	if ((start >= l) || (len == 0))
+		return (ft_calloc(sizeof(char), 1));
+	lmalloc = (start - l < len ? start - l : len);
+	if (!(str = (char*)malloc(sizeof(char) * lmalloc + 1)))
 		return (NULL);
 	while (len--)
 	{
@@ -60,9 +66,9 @@ char		*ft_substr(char *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char		*ft_strchr(const char *str, int c)
+char			*ft_strchr(const char *str, int c)
 {
-	size_t	si;
+	size_t		i;
 
 	if (c == 0)
 		return ((char *)str + ft_strlen(str));
@@ -76,7 +82,7 @@ char		*ft_strchr(const char *str, int c)
 	return (NULL);
 }
 
-char		*ft_strcpy(char *dest, const char *src)
+char			*ft_strcpy(char *dest, const char *src)
 {
 	size_t		i;
 

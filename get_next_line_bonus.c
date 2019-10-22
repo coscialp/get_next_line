@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   get_next_line.c                                  .::    .:/ .      .::   */
+/*   get_next_line_bonus.c                            .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/10/13 12:11:57 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/22 16:43:29 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/10/22 10:47:24 by coscialp     #+#   ##    ##    #+#       */
+/*   Updated: 2019/10/22 16:43:48 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void				*ft_memset(void *s, int c, size_t n)
 {
@@ -91,7 +91,7 @@ char				*next_line(char *str, char **line, size_t i)
 int					get_next_line(int fd, char **line)
 {
 	int				ret;
-	static char		*str;
+	static char		*str[256];
 	char			*tmp;
 	char			buf[BUFFER_SIZE + 1];
 
@@ -101,17 +101,17 @@ int					get_next_line(int fd, char **line)
 	{
 		if (ret < 0)
 			return (-1);
-		if (!str)
-			if (!(str = (char*)ft_calloc(sizeof(char), 1)))
+		if (!str[fd])
+			if (!(str[fd] = (char*)ft_calloc(sizeof(char), 1)))
 				return (-1);
 		buf[ret] = '\0';
-		if (!(tmp = ft_strfjoin(str, buf)))
+		if (!(tmp = ft_strfjoin(str[fd], buf)))
 			return (-1);
-		str = tmp;
+		str[fd] = tmp;
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	if ((*line = next_line(str, line, 0)) == (char*)-1)
+	if ((*line = next_line(str[fd], line, 0)) == (char*)-1)
 		return (-1);
 	return (*line == NULL ? 0 : 1);
 }
