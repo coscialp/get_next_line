@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/13 12:11:57 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/22 16:43:29 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/10/22 17:16:50 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -65,7 +65,7 @@ char				*next_line(char *str, char **line, size_t i)
 	char			*tmp;
 
 	if (!str)
-		return ((char*)-1);
+		return (NULL);
 	if (str[i])
 	{
 		while (str[i] != '\n' && str[i])
@@ -111,7 +111,6 @@ int					get_next_line(int fd, char **line)
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	if ((*line = next_line(str, line, 0)) == (char*)-1)
-		return (-1);
+	*line = next_line(str, line, 0);
 	return (*line == NULL ? 0 : 1);
 }
