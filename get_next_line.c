@@ -5,13 +5,13 @@
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/10/13 12:11:57 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/22 17:16:50 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/11/04 11:34:39 by coscialp     #+#   ##    ##    #+#       */
+/*   Updated: 2019/11/04 11:52:38 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void				*ft_memset(void *s, int c, size_t n)
 {
@@ -60,7 +60,7 @@ char				*ft_strfjoin(char *s1, const char *s2)
 	return (str);
 }
 
-char				*next_line(char *str, char **line, size_t i)
+char				*next_line(char *str, char **line, size_t i, int *end)
 {
 	char			*tmp;
 
@@ -72,7 +72,7 @@ char				*next_line(char *str, char **line, size_t i)
 			i++;
 		if (str[i] == '\n')
 		{
-			*line = ft_substr(str, 0, i);
+			*line = (i == 0) ? ft_strdup("") : ft_substr(str, 0, i);
 			tmp = ft_strdup(str + i + 1);
 			str = ft_strcpy(str, tmp);
 			free(tmp);
@@ -80,8 +80,9 @@ char				*next_line(char *str, char **line, size_t i)
 		}
 		else
 		{
-			*line = ft_substr(str, 0, i);
+			*line = (i == 0) ? ft_strdup("") : ft_substr(str, 0, i);
 			str[0] = 0;
+			*end = 1;
 			return (*line);
 		}
 	}
@@ -91,26 +92,27 @@ char				*next_line(char *str, char **line, size_t i)
 int					get_next_line(int fd, char **line)
 {
 	int				ret;
-	static char		*str;
+	int				end;
+	static char		*str[256];
 	char			*tmp;
 	char			buf[BUFFER_SIZE + 1];
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || !line)
+	end = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0 || !line || fd > 256)
 		return (-1);
 	while ((ret = read(fd, buf, BUFFER_SIZE)) != 0)
 	{
 		if (ret < 0)
 			return (-1);
-		if (!str)
-			if (!(str = (char*)ft_calloc(sizeof(char), 1)))
+		if (!str[fd])
+			if (!(str[fd] = (char*)ft_calloc(sizeof(char), 1)))
 				return (-1);
 		buf[ret] = '\0';
-		if (!(tmp = ft_strfjoin(str, buf)))
+		if (!(tmp = ft_strfjoin(str[fd], buf)))
 			return (-1);
-		str = tmp;
+		str[fd] = tmp;
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	*line = next_line(str, line, 0);
-	return (*line == NULL ? 0 : 1);
+	return (!((*line = next_line(str[fd], line, 0, &end)) == NULL || end == 1));
 }

@@ -5,8 +5,8 @@
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/10/22 10:47:24 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/22 17:16:38 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/11/04 11:53:06 by coscialp     #+#   ##    ##    #+#       */
+/*   Updated: 2019/11/04 11:53:07 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -60,7 +60,7 @@ char				*ft_strfjoin(char *s1, const char *s2)
 	return (str);
 }
 
-char				*next_line(char *str, char **line, size_t i)
+char				*next_line(char *str, char **line, size_t i, int *end)
 {
 	char			*tmp;
 
@@ -72,7 +72,7 @@ char				*next_line(char *str, char **line, size_t i)
 			i++;
 		if (str[i] == '\n')
 		{
-			*line = ft_substr(str, 0, i);
+			*line = (i == 0) ? ft_strdup("") : ft_substr(str, 0, i);
 			tmp = ft_strdup(str + i + 1);
 			str = ft_strcpy(str, tmp);
 			free(tmp);
@@ -80,8 +80,9 @@ char				*next_line(char *str, char **line, size_t i)
 		}
 		else
 		{
-			*line = ft_substr(str, 0, i);
+			*line = (i == 0) ? ft_strdup("") : ft_substr(str, 0, i);
 			str[0] = 0;
+			*end = 1;
 			return (*line);
 		}
 	}
@@ -91,11 +92,13 @@ char				*next_line(char *str, char **line, size_t i)
 int					get_next_line(int fd, char **line)
 {
 	int				ret;
+	int				end;
 	static char		*str[256];
 	char			*tmp;
 	char			buf[BUFFER_SIZE + 1];
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || !line)
+	end = 0;
+	if (fd < 0 || BUFFER_SIZE <= 0 || !line || fd > 256)
 		return (-1);
 	while ((ret = read(fd, buf, BUFFER_SIZE)) != 0)
 	{
@@ -111,6 +114,5 @@ int					get_next_line(int fd, char **line)
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	*line = next_line(str[fd], line, 0);
-	return (*line == NULL ? 0 : 1);
+	return (!((*line = next_line(str[fd], line, 0, &end)) == NULL || end == 1));
 }
