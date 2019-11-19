@@ -6,7 +6,7 @@
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/10/16 11:11:48 by tclaudel     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/19 12:15:09 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/11/19 16:47:01 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -102,10 +102,10 @@ int					get_next_line(int fd, char **line)
 	static char		*str[256];
 	char			buf[BUFFER_SIZE + 1];
 
-	*line = NULL;
 	end = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0 || !line || fd >= 256)
 		return (-1);
+	*line = NULL;
 	if (((str[fd] = read_line(str, buf, fd)) == (char *)-1))
 		return (-1);
 	*line = next_line(str[fd], line, 0, &end);
