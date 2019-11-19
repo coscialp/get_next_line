@@ -5,8 +5,8 @@
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: coscialp <coscialp@student.le-101.fr>      +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/10/13 10:15:55 by coscialp     #+#   ##    ##    #+#       */
-/*   Updated: 2019/10/22 14:17:45 by coscialp    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/10/16 11:41:47 by tclaudel     #+#   ##    ##    #+#       */
+/*   Updated: 2019/11/18 14:03:22 by coscialp    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -52,7 +52,7 @@ char			*ft_substr(char *s, unsigned int start, size_t len)
 	i = 0;
 	l = ft_strlen(s);
 	if ((start >= l) || (len == 0))
-		return (ft_calloc(sizeof(char), 1));
+		return (ft_strdup(""));
 	lmalloc = (start - l < len ? start - l : len);
 	if (!(str = (char*)malloc(sizeof(char) * lmalloc + 1)))
 		return (NULL);
